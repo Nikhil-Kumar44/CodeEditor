@@ -66,6 +66,30 @@ export function registerSocketHandlers(io: Server) {
       io.to(roomId).emit('room:users', { roomId, users })
     })
 
+    // --- Join Request (For rooms requiring approval) ---
+    socket.on('room:request-join', ({ roomId, userId, username, ownerId }) => {
+      console.log(`🛎️ ${username} requested to join ${roomId}`);
+      // Send request to all clients (the owner's client will handle it)
+      socket.broadcast.emit('room:join-request', {
+        roomId,
+        userId,
+        username,
+        ownerId,
+        requestSocketId: socket.id,
+      });
+    });
+
+    // --- Process Join Request (Owner approved/denied) ---
+    socket.on('room:process-join', ({ roomId, userId, requestSocketId, approved }) => {
+      console.log(`⚖️ Join request for ${userId} in ${roomId} was ${approved ? 'approved' : 'denied'}`);
+      
+      // Notify the specific socket that requested to join
+      io.to(requestSocketId).emit('room:join-result', {
+        roomId,
+        approved
+      });
+    });
+
     // --- Helper: Default code templates ---
     function getDefaultCode(lang: string) {
       switch (lang) {

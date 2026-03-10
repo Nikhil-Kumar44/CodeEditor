@@ -11,7 +11,7 @@ export default function Rooms() {
 
   // Replaced: rooms state populated from backend instead of mock
   // Shape aligns with backend: roomId is the public id field
-  const [rooms, setRooms] = useState<{ roomId: string; name: string; description?: string; isPublic?: boolean }[]>([])
+  const [rooms, setRooms] = useState<{ roomId: string; name: string; description?: string; isPublic?: boolean; ownerId?: any }[]>([])
 
   // Added: loading and error states for UX
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -23,7 +23,8 @@ export default function Rooms() {
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const [newRoomName, setNewRoomName] = useState('')
   const [newRoomDesc, setNewRoomDesc] = useState('')
-  const [newRoomPublic, setNewRoomPublic] = useState(true)
+  const [newRoomPublic, setNewRoomPublic] = useState(false)
+  const [newRoomRequireApproval, setNewRoomRequireApproval] = useState(true)
   const [isJoinOpen, setIsJoinOpen] = useState(false)
   const [joinRoomId, setJoinRoomId] = useState('')
 
@@ -41,30 +42,35 @@ export default function Rooms() {
     navigate('/login', { replace: true })
   }
 
+  const loadRooms = async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
+      // GET /api/rooms returns { success, data: { rooms } }
+      const res = await api.get('/rooms')
+      const fetched = (res.data?.data?.rooms || []).map((r: any) => ({
+        roomId: r.roomId,
+        name: r.name,
+        description: r.description,
+        isPublic: r.isPublic,
+        ownerId: r.ownerId,
+      }))
+      setRooms(fetched)
+    } catch (err: any) {
+      const message = err?.response?.data?.message || 'Failed to fetch rooms'
+      setError(message)
+      show(message, 'error')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   // Added: fetch rooms from backend on mount (persists across sessions)
   useEffect(() => {
     let active = true
       ; (async () => {
-        try {
-          setIsLoading(true)
-          setError(null)
-          // GET /api/rooms returns { success, data: { rooms } }
-          const res = await api.get('/rooms')
-          if (active) {
-            const fetched = (res.data?.data?.rooms || []).map((r: any) => ({
-              roomId: r.roomId,
-              name: r.name,
-              description: r.description,
-              isPublic: r.isPublic,
-            }))
-            setRooms(fetched)
-          }
-        } catch (err: any) {
-          const message = err?.response?.data?.message || 'Failed to fetch rooms'
-          setError(message)
-          show(message, 'error')
-        } finally {
-          setIsLoading(false)
+        if (active) {
+           await loadRooms();
         }
       })()
     return () => {
@@ -83,12 +89,13 @@ export default function Rooms() {
       const res = await api.post('/rooms', {
         name: newRoomName.trim(),
         isPublic: newRoomPublic,
+        requireApproval: newRoomRequireApproval,
         // description is not in controller schema; keep locally if needed later
       })
       const r = res.data?.data?.room
       if (r) {
         setRooms((prev) => [
-          { roomId: r.roomId, name: r.name, description: r.description, isPublic: r.isPublic },
+          { roomId: r.roomId, name: r.name, description: r.description, isPublic: r.isPublic, ownerId: r.ownerId },
           ...prev,
         ])
         show('Room created successfully!', 'success')
@@ -96,7 +103,8 @@ export default function Rooms() {
         // Navigate to the newly created room
         setNewRoomName('')
         setNewRoomDesc('')
-        setNewRoomPublic(true)
+        setNewRoomPublic(false)
+        setNewRoomRequireApproval(true)
         setIsCreateOpen(false)
 
         // Navigate to the room
@@ -120,11 +128,10 @@ export default function Rooms() {
       // Normalize Room ID
       const normalizedId = roomId.trim()
 
-      // Validate format: Accept both ABC-123 (new) and 12-char legacy IDs
-      const newFormat = /^[A-HJ-NP-Z]{3}-[2-9]{3}$/i
-      const legacyFormat = /^[a-zA-Z0-9_-]{12}$/
+      // Validate format: Accept IDs between 3 and 36 characters to support new, legacy, and ObjectIds
+      const flexibleFormat = /^[a-zA-Z0-9_-]{3,36}$/
 
-      if (!newFormat.test(normalizedId) && !legacyFormat.test(normalizedId)) {
+      if (!flexibleFormat.test(normalizedId)) {
         show('Invalid Room ID format', 'error')
         setIsLoading(false)
         return
@@ -134,10 +141,41 @@ export default function Rooms() {
       show('Joined room successfully!', 'success')
       navigate(`/rooms/${normalizedId}`)
     } catch (err: any) {
+      if (err?.response?.data?.requireApproval) {
+        // Handle "Waiting for approval" state
+        show('Request sent to room owner. Waiting for approval...', 'info')
+        
+        // Connect socket just to send the request
+        const socket = (window as any).socket
+        if (socket) {
+          socket.emit('room:request-join', {
+             roomId: err.response.data.data.roomId,
+             userId: user?._id || (user as any)?.id,
+             username: user?.username,
+             ownerId: err.response.data.data.ownerId,
+          })
+
+          const handleJoinResult = (data: { roomId: string, approved: boolean }) => {
+            if (data.roomId === err.response.data.data.roomId) {
+               socket.off('room:join-result', handleJoinResult);
+               setIsLoading(false);
+               if (data.approved) {
+                 show('Join request approved! Entering room...', 'success')
+                 navigate(`/rooms/${data.roomId}`)
+               } else {
+                 show('The room owner denied your request to join.', 'error')
+               }
+            }
+          }
+          
+          socket.on('room:join-result', handleJoinResult);
+          return; // Stay loading
+        }
+      }
+
       const message = err?.response?.data?.message || 'Failed to join room'
       setError(message)
       show(message, 'error')
-    } finally {
       setIsLoading(false)
     }
   }
@@ -164,10 +202,25 @@ export default function Rooms() {
       formatted = formatted.slice(0, 3).toUpperCase() + '-' + formatted.slice(3)
     }
 
-    // Limit to 12 characters (legacy) or 7 (ABC-123)
-    formatted = formatted.slice(0, 12)
+    // Limit to 36 characters (UUID size)
+    formatted = formatted.slice(0, 36)
 
     setJoinRoomId(formatted)
+  }
+
+  // --- Handle Delete Room from Dashboard ---
+  const handleDeleteRoom = async (e: React.MouseEvent, roomId: string) => {
+    e.stopPropagation(); // Prevents clicking the card background or join button
+    if (window.confirm('Are you sure you want to delete this room? This action cannot be undone.')) {
+      try {
+        await api.delete(`/rooms/${roomId}`)
+        show('Room deleted successfully', 'success')
+        // Refresh the rooms list
+        loadRooms()
+      } catch (err: any) {
+        show(err?.response?.data?.message || 'Failed to delete room', 'error')
+      }
+    }
   }
 
   return (
@@ -235,7 +288,18 @@ export default function Rooms() {
                 className="backdrop-blur-lg bg-white/10 border border-white/10 rounded-2xl p-5 shadow-xl flex flex-col"
               >
                 <div className="mb-3">
-                  <h3 className="text-white font-semibold text-lg">{room.name}</h3>
+                  <div className="flex items-start justify-between">
+                    <h3 className="text-white font-semibold text-lg">{room.name}</h3>
+                    {user && room.ownerId && (user._id === room.ownerId || (user as any).id === room.ownerId || user._id === room.ownerId._id || (user as any).id === room.ownerId._id) && (
+                      <button 
+                        onClick={(e) => handleDeleteRoom(e, room.roomId)}
+                        className="text-red-400 hover:text-red-300 p-1 rounded hover:bg-red-500/10 transition-colors"
+                        title="Delete Room"
+                      >
+                        <i className="fa-solid fa-trash-can"></i>
+                      </button>
+                    )}
+                  </div>
                   {room.description ? (
                     <p className="text-slate-300/80 text-sm">{room.description}</p>
                   ) : (
@@ -351,15 +415,29 @@ export default function Rooms() {
                 />
               </div>
               <div className="flex items-center justify-between gap-2">
-                {/* Added: toggle for public/private room (stored as isPublic) */}
-                <label className="flex items-center gap-2 text-slate-200 text-sm">
-                  <input
-                    type="checkbox"
-                    checked={newRoomPublic}
-                    onChange={(e) => setNewRoomPublic(e.target.checked)}
-                  />
-                  Public room
-                </label>
+                <div className="flex flex-col gap-2">
+                  <label className="flex items-center gap-2 text-slate-200 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={newRoomPublic}
+                      onChange={(e) => {
+                        setNewRoomPublic(e.target.checked)
+                        if (!e.target.checked) setNewRoomRequireApproval(false)
+                      }}
+                    />
+                    Public room (visible on dashboard to others)
+                  </label>
+                  {newRoomPublic && (
+                    <label className="flex items-center gap-2 text-slate-200 text-sm">
+                      <input
+                        type="checkbox"
+                        checked={newRoomRequireApproval}
+                        onChange={(e) => setNewRoomRequireApproval(e.target.checked)}
+                      />
+                      Require my approval for others to join
+                    </label>
+                  )}
+                </div>
                 <button
                   type="button"
                   onClick={() => setIsCreateOpen(false)}

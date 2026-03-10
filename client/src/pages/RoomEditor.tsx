@@ -37,6 +37,10 @@ export default function RoomEditor() {
   const [suggestion, setSuggestion] = useState<{ name: string; type: 'function' | 'variable'; pos: { x: number; y: number } } | null>(null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  
+  // Room Ownership Features
+  const [joinRequests, setJoinRequests] = useState<any[]>([])
+  const [roomOwnerId, setRoomOwnerId] = useState<string | null>(null)
 
   const {
     code,
@@ -86,6 +90,7 @@ export default function RoomEditor() {
           if (success) {
             console.log('✅ Successfully joined room:', data?.room)
             setRoomName(data?.room?.name || 'Room')
+            setRoomOwnerId(data?.room?.ownerId?._id || data?.room?.ownerId || null)
           }
         } catch (error: any) {
           console.error('❌ Failed to join room:', error.response?.data || error.message)
@@ -334,6 +339,45 @@ export default function RoomEditor() {
     socket.on('code:output', handleCodeOutput)
     return () => socket.off('code:output', handleCodeOutput)
   }, [])
+
+  // --- Handle Join Requests (Owner only) ---
+  useEffect(() => {
+    const socket = (window as any).socket
+    if (!socket || !currentUser || !roomOwnerId) return
+
+    // Only listen if we are the owner
+    const uid = currentUser?._id || (currentUser as any)?.id;
+    if (uid !== roomOwnerId) return
+
+    const handleJoinRequest = (data: any) => {
+      if (data.roomId === roomId) {
+        show(`${data.username} requested to join`, 'info')
+        setJoinRequests(prev => [...prev, data])
+      }
+    }
+
+    socket.on('room:join-request', handleJoinRequest)
+    return () => socket.off('room:join-request', handleJoinRequest)
+  }, [roomId, currentUser, roomOwnerId, show])
+
+  const handleProcessJoinRequest = (req: any, approved: boolean) => {
+    const socket = (window as any).socket
+    if (!socket) return
+
+    socket.emit('room:process-join', {
+      roomId: req.roomId,
+      userId: req.userId,
+      requestSocketId: req.requestSocketId,
+      approved
+    })
+
+    setJoinRequests(prev => prev.filter(r => r.requestSocketId !== req.requestSocketId))
+    if (approved) {
+      show(`Allowed ${req.username} to join`, 'success')
+    } else {
+      show(`Denied ${req.username}`, 'info')
+    }
+  }
 
   // --- Resize layout (editor <-> terminal) ---
   useEffect(() => {
@@ -1143,6 +1187,43 @@ export default function RoomEditor() {
                   ))}
                 </div>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Join Requests Modal (Owner Only) */}
+      {joinRequests.length > 0 && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-gray-900 border border-indigo-500/30 rounded-2xl shadow-2xl shadow-indigo-500/20 w-full max-w-sm overflow-hidden">
+            <div className="p-4 border-b border-gray-800 bg-gray-950 flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center">
+                <i className="fa-solid fa-bell text-indigo-400"></i>
+              </div>
+              <h2 className="text-lg font-bold text-white">Join Requests ({joinRequests.length})</h2>
+            </div>
+            <div className="max-h-[60vh] overflow-y-auto">
+              {joinRequests.map((req, idx) => (
+                <div key={idx} className="p-4 border-b border-gray-800 hover:bg-gray-800/50 transition-colors">
+                  <p className="text-gray-300 mb-3 text-sm">
+                    <span className="font-bold text-white">{req.username}</span> wants to join the room.
+                  </p>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleProcessJoinRequest(req, false)}
+                      className="flex-1 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm font-medium rounded-lg transition-colors"
+                    >
+                      Deny
+                    </button>
+                    <button
+                      onClick={() => handleProcessJoinRequest(req, true)}
+                      className="flex-1 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors"
+                    >
+                      Allow
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

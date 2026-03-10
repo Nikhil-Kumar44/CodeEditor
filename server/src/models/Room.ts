@@ -21,6 +21,7 @@ export interface IRoom extends Document {
   maxUsers: number; // Maximum allowed users
   isPublic: boolean;
   isActive: boolean; // Room active status
+  requireApproval: boolean; // Needs owner approval to join
   createdAt: Date;
   updatedAt: Date;
 }
@@ -75,6 +76,10 @@ const roomSchema = new Schema<IRoom>(
       default: false,
     },
     isActive: {
+      type: Boolean,
+      default: true,
+    },
+    requireApproval: {
       type: Boolean,
       default: true,
     },

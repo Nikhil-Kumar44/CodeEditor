@@ -38,13 +38,11 @@ export function validateRoomIdFormat(roomId: string): boolean {
         return false;
     }
 
-    // New format: 3 letters (A-Z, no I/O) + hyphen + 3 numbers (2-9, no 0/1)
-    const newFormat = /^[A-HJ-NP-Z]{3}-[2-9]{3}$/i;
+    // Accept new format, legacy format, ObjectIds, etc.
+    // Basically just ensure it's a reasonably sized alphanumeric string to prevent abuse, but don't artificially block valid IDs
+    const flexibleFormat = /^[a-zA-Z0-9_-]{3,36}$/;
 
-    // Legacy format: 12 characters (letters, numbers, underscore, hyphen)
-    const legacyFormat = /^[a-zA-Z0-9_-]{12}$/;
-
-    return newFormat.test(roomId) || legacyFormat.test(roomId);
+    return flexibleFormat.test(roomId);
 }
 
 /**

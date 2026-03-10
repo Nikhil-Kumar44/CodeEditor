@@ -11,14 +11,16 @@ export const createRoom = async (req: AuthRequest, res: Response): Promise<void>
       return;
     }
 
-    const { name, language, isPublic } = req.body;
-    console.log('🔵 Creating room with isPublic:', isPublic, 'type:', typeof isPublic);
+    const { name, language, isPublic, requireApproval } = req.body;
+    console.log('🔵 Creating room with isPublic:', isPublic, 'requireApproval:', requireApproval);
 
     const room = await Room.create({
       name: name || 'Untitled Room',
       ownerId: req.user.id,
       language: language || 'javascript',
       isPublic: isPublic === true, // Explicitly convert to boolean, defaults to false
+      // Only public rooms can require approval
+      requireApproval: isPublic === true ? (requireApproval !== false) : false,
       users: [
         {
           userId: req.user.id,
@@ -118,7 +120,7 @@ export const updateRoom = async (req: AuthRequest, res: Response): Promise<void>
     }
 
     const { roomId } = req.params;
-    const { name, language, code, isPublic } = req.body;
+    const { name, language, code, isPublic, requireApproval } = req.body;
 
     const room = await Room.findOne({ roomId });
     if (!room) {
@@ -134,7 +136,18 @@ export const updateRoom = async (req: AuthRequest, res: Response): Promise<void>
     if (name !== undefined) room.name = name;
     if (language !== undefined) room.language = language;
     if (code !== undefined) room.code = code;
-    if (isPublic !== undefined) room.isPublic = isPublic;
+    if (isPublic !== undefined) {
+      room.isPublic = isPublic;
+      // If made private, disable approval requirement
+      if (!isPublic) {
+        room.requireApproval = false;
+      }
+    }
+    
+    if (requireApproval !== undefined) {
+      // Only apply if the room is public
+      room.requireApproval = room.isPublic ? requireApproval : false;
+    }
 
     await room.save();
 
@@ -255,7 +268,22 @@ export const joinRoom = async (req: AuthRequest, res: Response): Promise<void> =
       return;
     }
 
-    // Add user to room
+    // Check if approval is required
+    if (room.requireApproval && !isOwner && !isCollab) {
+      res.json({
+        success: false,
+        requireApproval: true,
+        message: 'Waiting for owner approval...',
+        data: {
+          roomId: room.roomId,
+          roomName: room.name,
+          ownerId: room.ownerId,
+        }
+      });
+      return;
+    }
+
+    // Add user to room directly if no approval required or if they are owner/collab
     if (!isOwner && !isCollab) {
       room.collaborators.push(req.user!.id as any);
     }
