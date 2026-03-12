@@ -24,13 +24,18 @@ export const sendEmail = async (options: EmailOptions) => {
     console.log(`✉️ Using Ethereal Email for testing purposes...`)
   } else {
     // Production / Configured setup
+    const port = Number(process.env.SMTP_PORT) || 587
     transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT),
+      port: port,
+      secure: port === 465, // true for 465, false for other ports like 587
       auth: {
         user: process.env.SMTP_EMAIL,
         pass: process.env.SMTP_PASSWORD,
       },
+      tls: {
+        rejectUnauthorized: false
+      }
     })
   }
 
