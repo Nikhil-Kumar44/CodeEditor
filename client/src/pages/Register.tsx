@@ -18,6 +18,14 @@ export default function Register() {
       show('Username must be at least 3 characters', 'error')
       return
     }
+
+    // Basic email validation regex ensuring an '@' and a domain with a dot (e.g., .com, .net, .org)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      show('Please enter a valid email address with a domain (e.g., user@example.com)', 'error')
+      return
+    }
+
     try {
       await register(username.trim(), email, password)
       show('Registered successfully', 'success')
