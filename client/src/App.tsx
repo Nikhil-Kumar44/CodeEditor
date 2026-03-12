@@ -6,6 +6,8 @@ import Register from './pages/Register'
 import Rooms from './pages/Rooms'
 import RoomEditor from './pages/RoomEditor'
 import Landing from './pages/Landing'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
       <Route element={<ProtectedRoute />}>
         {/* Switched to Rooms page with logout and rooms dashboard */}
         <Route path="/rooms" element={<Rooms />} />
