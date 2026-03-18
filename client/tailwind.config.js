@@ -3,67 +3,75 @@ export default {
   darkMode: 'class',
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{js,ts,jsx,tsx,css}",
   ],
   theme: {
     extend: {
       colors: {
-        primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
-          950: '#172554',
+        neon: {
+          cyan: '#00f3ff',
+          purple: '#bc13fe',
+          pink: '#ff00ff',
+          green: '#b6ff00',
+          blue: '#0066ff',
         },
-        secondary: {
-          50: '#faf5ff',
-          100: '#f3e8ff',
-          200: '#e9d5ff',
-          300: '#d8b4fe',
-          400: '#c084fc',
-          500: '#a855f7',
-          600: '#9333ea',
-          700: '#7e22ce',
-          800: '#6b21a8',
-          900: '#581c87',
-          950: '#3b0764',
-        },
-        accent: {
-          50: '#ecfeff',
-          100: '#cffafe',
-          200: '#a5f3fc',
-          300: '#67e8f9',
-          400: '#22d3ee',
-          500: '#06b6d4',
-          600: '#0891b2',
-          700: '#0e7490',
-          800: '#155e75',
-          900: '#164e63',
-          950: '#083344',
-        },
+        slate: {
+          950: '#020617',
+        }
+      },
+      boxShadow: {
+        'neon-cyan': '0 0 5px theme("colors.neon.cyan"), 0 0 20px theme("colors.neon.cyan")',
+        'neon-purple': '0 0 5px theme("colors.neon.purple"), 0 0 20px theme("colors.neon.purple")',
+        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+      },
+      backgroundImage: {
+        'glass-gradient': 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))',
       },
       animation: {
-        fadeIn: 'fadeIn 0.5s ease-in-out',
-        slideIn: 'slideIn 0.3s ease-out',
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'glow': 'glow 2s ease-in-out infinite alternate',
       },
       keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        slideIn: {
-          '0%': { transform: 'translateY(-10px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-      },
+        glow: {
+          '0%': { boxShadow: '0 0 5px theme("colors.neon.cyan"), 0 0 10px theme("colors.neon.cyan")' },
+          '100%': { boxShadow: '0 0 10px theme("colors.neon.cyan"), 0 0 20px theme("colors.neon.cyan")' },
+        }
+      }
     },
   },
-  plugins: [],
+  plugins: [
+    function({ addComponents }) {
+      addComponents({
+        '.glass': {
+          background: 'rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'blur(12px)',
+          '-webkit-backdrop-filter': 'blur(12px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+        },
+        '.glass-card': {
+          '@apply glass rounded-2xl p-6 transition-all duration-300': {},
+          '&:hover': {
+            borderColor: 'rgba(0, 243, 255, 0.3)',
+            transform: 'translateY(-4px)',
+            boxShadow: '0 12px 40px 0 rgba(0, 243, 255, 0.1)',
+          }
+        },
+        '.neon-button-cyan': {
+          '@apply px-6 py-2 rounded-full font-bold transition-all duration-300': {},
+          background: 'transparent',
+          border: `2px solid theme('colors.neon.cyan')`,
+          color: `theme('colors.neon.cyan')`,
+          boxShadow: '0 0 10px rgba(0, 243, 255, 0.2)',
+          cursor: 'pointer',
+          '&:hover': {
+            background: `theme('colors.neon.cyan')`,
+            color: '#000',
+            boxShadow: `0 0 20px theme('colors.neon.cyan'), 0 0 40px theme('colors.neon.cyan')`,
+          }
+        }
+      })
+    }
+  ],
 }
 

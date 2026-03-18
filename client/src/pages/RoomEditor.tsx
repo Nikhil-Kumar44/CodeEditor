@@ -524,54 +524,54 @@ export default function RoomEditor() {
   }
 
   return (
-    <div className="h-screen w-full bg-[#0f172a] text-gray-300 flex flex-col overflow-hidden font-sans">
-      {/* Header - Professional Design */}
-      <header className="h-16 bg-[#020617] border-b border-[#1e293b] flex items-center justify-between px-2 sm:px-6 shrink-0 z-30 overflow-visible">
+    <div className="h-screen w-full bg-dots text-gray-300 flex flex-col overflow-hidden font-sans relative">
+      <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-[radial-gradient(circle,rgba(0,243,255,0.05)_0%,transparent_70%)] z-0 pointer-events-none"></div>
+      
+      {/* Header */}
+      <header className="h-16 glass border-b border-white/10 flex items-center justify-between px-2 sm:px-6 shrink-0 z-30 overflow-visible relative">
         <div className="flex items-center gap-2 sm:gap-4 shrink-0">
           <Link
             to="/rooms"
-            className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors group"
+            className="flex items-center gap-2 text-gray-400 hover:text-cyan-400 transition-colors group"
           >
-            <div className="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center group-hover:bg-indigo-500/20 transition-all overflow-hidden p-1.5">
+            <div className="w-8 h-8 rounded-lg glass flex items-center justify-center group-hover:bg-white/10 transition-all overflow-hidden p-1.5">
               <img src={backLogo} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity" alt="Back" />
             </div>
-            <span className="text-sm font-medium hidden md:inline">Back to Rooms</span>
           </Link>
 
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#38bdf8] rounded-xl p-[2px] shadow-lg shadow-[#38bdf8]/30">
-              <div className="w-full h-full bg-[#0f172a] rounded-[10px] overflow-hidden flex items-center justify-center">
-                <img src={logo} alt="CollabCode Logo" className="w-full h-full object-cover" />
-              </div>
+            <div className="w-10 h-10 glass rounded-xl flex items-center justify-center relative group overflow-hidden">
+              <div className="absolute inset-0 bg-cyan-400/10 transition-colors"></div>
+              <img src={logo} alt="Logo" className="w-6 h-6 object-contain relative z-10 filter drop-shadow(0 0 5px rgba(0,243,255,0.5))" />
             </div>
-            <div>
-              <h1 className="text-white font-bold text-lg hidden sm:block">CollabCode</h1>
-              <div className="flex items-center gap-2 text-[10px] sm:text-xs text-gray-400">
-                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-green-500 shrink-0 animate-pulse"></span>
-                <span className="truncate max-w-[60px] sm:max-w-[120px]">{roomName}</span>
-                <span className="text-gray-600 hidden sm:inline">•</span>
-                <span className="text-green-400 font-medium hidden sm:inline">{isConnected ? 'Live' : 'Connecting...'}</span>
+            <div className="hidden sm:block">
+              <h1 className="text-white font-black tracking-tighter text-sm uppercase">COLLAB<span className="neon-text-cyan">CODE</span></h1>
+              <div className="flex items-center gap-2 text-[10px] text-gray-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                <span className="truncate max-w-[120px]">{roomName.toUpperCase()}</span>
+                <span className="text-gray-600">•</span>
+                <span className="text-green-400 font-bold">{isConnected ? 'LIVE' : 'SYNCING...'}</span>
               </div>
             </div>
           </div>
 
-          {/* Room ID Display with Copy Button */}
-          <div className="flex items-center gap-1 sm:gap-2 bg-gray-800/50 border border-gray-700 rounded-lg px-2 py-1.5 sm:px-3 sm:py-2">
-            <i className="fa-solid fa-hashtag text-gray-500 text-[10px] sm:text-xs hidden sm:block"></i>
-            <span className="text-gray-300 font-mono text-xs sm:text-sm font-medium tracking-wider">
+          {/* Room ID Display */}
+          <div className="flex items-center gap-2 glass border border-white/5 rounded-full px-4 py-1.5 overflow-hidden">
+            <span className="text-slate-500 font-black text-[10px] tracking-widest hidden lg:inline">SESSION ID</span>
+            <span className="text-cyan-400 font-mono text-xs font-black tracking-widest">
               {roomId}
             </span>
             <div className="relative">
               <button
                 onClick={handleCopyRoomId}
-                className="p-1.5 rounded hover:bg-gray-700 text-gray-400 hover:text-indigo-400 transition-colors"
+                className="p-1 rounded text-slate-500 hover:text-white transition-colors"
                 title="Copy Room ID"
               >
-                <i className="fa-solid fa-copy text-xs"></i>
+                <i className="fa-solid fa-copy text-[10px]"></i>
               </button>
               {showCopiedTooltip && (
-                <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-green-500 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                  Copied!
+                <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-cyan-500 text-black text-[10px] font-black px-2 py-0.5 rounded whitespace-nowrap shadow-[0_0_10px_var(--neon-cyan)] animate-in fade-in slide-in-from-top-1">
+                  COPIED
                 </div>
               )}
             </div>
@@ -580,9 +580,9 @@ export default function RoomEditor() {
 
         <div className="flex items-center gap-2 sm:gap-4 shrink-0 pl-2">
           {/* Room Info */}
-          <div className="hidden sm:flex bg-gray-900/60 backdrop-blur-sm px-4 py-2 rounded-lg border border-gray-800 items-center gap-2">
-            <i className="fa-solid fa-users text-green-400"></i>
-            <span className="text-sm">{localUsers.length} Online</span>
+          <div className="hidden xl:flex glass px-4 py-1.5 rounded-full items-center gap-2">
+            <i className="fa-solid fa-users text-green-400 text-[10px]"></i>
+            <span className="text-[10px] font-black tracking-widest text-slate-400">{localUsers.length} ONLINE</span>
           </div>
 
           {/* Share Button */}
@@ -595,28 +595,28 @@ export default function RoomEditor() {
           <div className="relative" ref={languageDropdownRef}>
             <button
               onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
-              className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-gray-900 border border-gray-800 rounded-lg text-xs sm:text-sm text-gray-300 hover:border-indigo-500 transition-all min-w-[70px] sm:min-w-[140px] justify-between"
+              className="flex items-center gap-2 px-3 py-2 glass border border-white/5 rounded-lg text-xs font-black tracking-widest text-white hover:border-cyan-400/50 transition-all min-w-[70px] sm:min-w-[130px] justify-between uppercase"
             >
               <div className="flex items-center gap-2">
-                <i className={`${currentLanguage.icon} text-indigo-400`}></i>
+                <i className={`${currentLanguage.icon} text-cyan-400`}></i>
                 <span className="hidden sm:inline">{currentLanguage.label}</span>
               </div>
-              <i className={`fa-solid fa-chevron-down text-[10px] sm:text-xs transition-transform ${showLanguageDropdown ? 'rotate-180' : ''}`}></i>
+              <i className={`fa-solid fa-chevron-down text-[10px] transition-transform ${showLanguageDropdown ? 'rotate-180' : ''}`}></i>
             </button>
 
             {showLanguageDropdown && (
-              <div className="absolute top-full right-0 mt-2 w-56 bg-gray-900 border border-gray-800 rounded-xl shadow-2xl overflow-hidden z-50">
-                <div className="py-1">
+              <div className="absolute top-full right-0 mt-2 w-56 glass border border-white/10 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] overflow-hidden z-50 animate-in fade-in slide-in-from-top-2">
+                <div className="py-2">
                   {languages.map((lang) => (
                     <button
                       key={lang.key}
                       onClick={() => handleLanguageChange(lang.key)}
-                      className={`w-full flex items-center gap-3 px-4 py-3 text-sm transition-colors ${language === lang.key
-                        ? 'bg-[#38bdf8]/10 text-[#38bdf8]'
-                        : 'text-gray-400 hover:bg-[#1e293b] hover:text-white'
+                      className={`w-full flex items-center gap-3 px-4 py-3 text-[10px] font-black tracking-widest transition-colors uppercase ${language === lang.key
+                        ? 'bg-cyan-400/10 text-cyan-400'
+                        : 'text-slate-400 hover:bg-white/5 hover:text-white'
                         }`}
                     >
-                      <i className={`${lang.icon} w-5 text-center`}></i>
+                      <i className={`${lang.icon} w-5 text-center text-xs`}></i>
                       <span className="flex-1 text-left">{lang.label}</span>
                       {language === lang.key && <i className="fa-solid fa-check text-xs"></i>}
                     </button>
@@ -630,36 +630,36 @@ export default function RoomEditor() {
           <button
             onClick={handleDeepScan}
             disabled={isAnalyzing}
-            className={`flex items-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg border transition-all duration-200 ${isAnalyzing
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-all duration-300 ${isAnalyzing
               ? 'bg-slate-700/50 border-slate-600 text-slate-400 cursor-not-allowed'
-              : 'bg-indigo-600/20 border-indigo-500/30 text-indigo-300 hover:bg-indigo-600/30 hover:border-indigo-400'
+              : 'glass border-indigo-500/30 text-indigo-300 hover:bg-indigo-500 hover:text-white hover:shadow-[0_0_20px_rgba(99,102,241,0.4)]'
               }`}
             title="Analyze Entire File with Gemini"
           >
             {isAnalyzing ? (
-              <i className="fa-solid fa-spinner fa-spin text-xs sm:text-base"></i>
+              <i className="fa-solid fa-spinner fa-spin text-xs"></i>
             ) : (
-              <i className="fa-solid fa-wand-magic-sparkles text-indigo-400 text-xs sm:text-base"></i>
+              <i className="fa-solid fa-wand-magic-sparkles text-xs"></i>
             )}
-            <span className="hidden sm:inline text-sm font-medium">Scan</span>
+            <span className="hidden sm:inline text-[10px] font-black tracking-widest uppercase">SCAN</span>
           </button>
 
           {/* Run Button */}
           <button
             onClick={handleRunCode}
             disabled={isRunning}
-            className="flex items-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-5 sm:py-2.5 bg-[#38bdf8] hover:bg-sky-400 text-black text-sm font-semibold rounded-lg shadow-lg shadow-[#38bdf8]/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-5 py-2.5 bg-cyan-400 hover:bg-cyan-300 text-black text-xs font-black tracking-widest rounded-lg shadow-[0_0_20px_rgba(0,243,255,0.3)] transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed uppercase"
           >
             {isRunning ? (
               <>
-                <i className="fa-solid fa-circle-notch animate-spin text-xs sm:text-base"></i>
-                <span className="hidden sm:inline">Running...</span>
+                <i className="fa-solid fa-circle-notch animate-spin text-xs"></i>
+                <span className="hidden sm:inline">RUNNING</span>
               </>
             ) : (
               <>
-                <i className="fa-solid fa-play text-xs sm:text-base"></i>
-                <span className="hidden sm:inline">Run Code</span>
-                <span className="sm:hidden text-xs">Run</span>
+                <i className="fa-solid fa-play text-xs"></i>
+                <span className="hidden sm:inline">EXECUTE</span>
+                <span className="sm:hidden">RUN</span>
               </>
             )}
           </button>
@@ -667,48 +667,48 @@ export default function RoomEditor() {
           {/* Mobile Sidebar Toggle Button */}
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="md:hidden flex items-center justify-center w-8 h-8 rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-colors"
+            className="md:hidden flex items-center justify-center w-10 h-10 rounded-xl glass border-white/5 text-cyan-400 hover:bg-white/10 transition-all shadow-[0_0_15px_rgba(0,243,255,0.1)] active:scale-90"
           >
-            <i className={`fa-solid ${isSidebarOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
+            <i className={`fa-solid ${isSidebarOpen ? 'fa-xmark' : 'fa-bars'} text-sm`}></i>
           </button>
         </div>
       </header>
 
       {/* Main Content */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden relative z-10">
         {/* Left Panel - Editor */}
         <div className="flex-1 flex flex-col min-w-0">
           {/* File Tabs */}
-          <div className="flex items-center bg-[#020617] border-b border-[#1e293b] px-2 pt-2 gap-1 overflow-x-auto">
+          <div className="flex items-center glass border-b border-white/5 px-2 pt-2 gap-1 overflow-x-auto">
             {files.map((f) => (
               <div
                 key={f.id}
                 onClick={() => setActiveFile(f.id)}
-                className={`group flex items-center gap-2 px-4 py-3 text-sm rounded-t-lg cursor-pointer transition-all min-w-[120px] ${activeFile === f.id
-                  ? 'bg-[#0f172a] text-[#38bdf8] font-medium border-t border-x border-[#1e293b]'
-                  : 'text-gray-500 hover:text-white hover:bg-[#1e293b]'
+                className={`group flex items-center gap-2 px-4 py-2.5 text-[10px] font-black tracking-widest uppercase rounded-t-xl cursor-pointer transition-all min-w-[140px] border-t border-x ${activeFile === f.id
+                  ? 'bg-white/5 text-cyan-400 border-white/10'
+                  : 'text-slate-500 border-transparent hover:text-slate-300 hover:bg-white/5'
                   }`}
               >
-                <i className={`fa-regular fa-file-code ${activeFile === f.id ? 'text-[#38bdf8]' : 'text-gray-600'}`}></i>
+                <i className={`fa-regular fa-file-code text-xs ${activeFile === f.id ? 'text-cyan-400' : 'text-slate-600'}`}></i>
                 <span className="truncate flex-1">{f.name}</span>
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
                     handleRemoveFile(f.id)
                   }}
-                  className="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors mx-1"
+                  className="w-5 h-5 flex items-center justify-center text-slate-600 hover:text-rose-400 transition-colors"
                   title="Close file"
                 >
-                  <i className="fa-solid fa-xmark text-sm"></i>
+                  <i className="fa-solid fa-xmark text-xs"></i>
                 </button>
               </div>
             ))}
             <button
               onClick={handleAddFile}
-              className="p-2 text-gray-500 hover:text-indigo-400 hover:bg-gray-900 rounded-lg transition-colors ml-1"
+              className="w-8 h-8 flex items-center justify-center text-slate-500 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-all ml-1"
               title="New File"
             >
-              <i className="fa-solid fa-plus"></i>
+              <i className="fa-solid fa-plus text-xs"></i>
             </button>
           </div>
 
@@ -757,35 +757,35 @@ export default function RoomEditor() {
                 style={{
                   position: 'absolute',
                   left: suggestion.pos.x,
-                  top: suggestion.pos.y - 40,
+                  top: suggestion.pos.y - 45,
                   zIndex: 100
                 }}
-                className="animate-in fade-in slide-in-from-bottom-2 duration-200"
+                className="animate-in fade-in zoom-in duration-300"
               >
                 <button
                   onClick={handleApplyFix}
-                  className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-xl flex items-center gap-2 border border-indigo-400 group whitespace-nowrap"
+                  className="bg-indigo-600/90 hover:bg-indigo-500 text-white text-[10px] font-black tracking-widest uppercase px-4 py-2 rounded-xl shadow-[0_0_20px_rgba(99,102,241,0.5)] flex items-center gap-3 border border-indigo-400/50 backdrop-blur-md group whitespace-nowrap"
                 >
-                  <i className="fa-solid fa-wand-magic-sparkles text-indigo-200 group-hover:scale-110 transition-transform"></i>
-                  {suggestion.type === 'function' ? `Create function ${suggestion.name}()` : `Declare variable ${suggestion.name}`}
+                  <i className="fa-solid fa-wand-magic-sparkles text-sm group-hover:rotate-12 transition-transform"></i>
+                  {suggestion.type === 'function' ? `INITIALIZE: ${suggestion.name}()` : `DECLARE: ${suggestion.name}`}
                 </button>
               </div>
             )}
 
             {/* Typing Indicator */}
             {Object.values(typingUsers).filter(u => (u as any).isTyping).length > 0 && (
-              <div className="absolute bottom-2 left-4 z-[9999] pointer-events-none text-xs text-gray-400 flex items-center gap-2 bg-gray-900/90 px-3 py-1.5 rounded-lg backdrop-blur-sm border border-gray-800 shadow-xl">
-                <div className="flex gap-1">
-                  <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                  <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                  <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+              <div className="absolute bottom-4 left-6 z-[9999] pointer-events-none text-[10px] font-black tracking-widest uppercase text-slate-400 flex items-center gap-3 glass px-4 py-2 rounded-full border border-white/5 shadow-2xl animate-in slide-in-from-left-4 duration-500">
+                <div className="flex gap-1.5">
+                  <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                  <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                  <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
                 </div>
                 <span>
                   {(() => {
                     const typing = Object.values(typingUsers).filter(u => u.isTyping)
-                    if (typing.length === 1) return `${typing[0].username} is typing...`
-                    if (typing.length === 2) return `${typing[0].username} and ${typing[1].username} are typing...`
-                    return `${typing[0].username}, ${typing[1].username}, and ${typing.length - 2} ${typing.length - 2 === 1 ? 'other' : 'others'} are typing...`
+                    if (typing.length === 1) return `${typing[0].username} COMMUNICATING...`
+                    if (typing.length === 2) return `${typing[0].username} & ${typing[1].username} COMMUNICATING...`
+                    return `${typing.length} AGENTS COMMUNICATING...`
                   })()}
                 </span>
               </div>
@@ -795,39 +795,39 @@ export default function RoomEditor() {
           {/* Resizer */}
           <div
             ref={resizerRef}
-            className="h-1.5 bg-gray-900 hover:bg-indigo-500/50 cursor-ns-resize transition-colors flex items-center justify-center group"
+            className="h-1 bg-white/5 hover:bg-cyan-400/30 cursor-ns-resize transition-colors flex items-center justify-center group relative z-20"
           >
-            <div className="w-12 h-1 rounded-full bg-gray-800 group-hover:bg-gray-600 transition-colors"></div>
+            <div className="w-20 h-0.5 rounded-full bg-slate-700 group-hover:bg-cyan-400 transition-colors"></div>
           </div>
 
           {/* Terminal Area */}
-          <div style={{ height: `${100 - editorHeight}%` }} className="flex flex-col bg-[#0f172a] border-t border-[#1e293b]">
+          <div style={{ height: `${100 - editorHeight}%` }} className="flex flex-col glass border-t border-white/5 relative bg-black/20">
             {/* Terminal Tabs */}
-            <div className="flex items-center border-b border-[#1e293b] px-4">
+            <div className="flex items-center gap-2 border-b border-white/5 px-4 overflow-x-auto">
               <button
                 onClick={() => setActiveTab('output')}
-                className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'output'
-                  ? 'border-[#38bdf8] text-[#38bdf8]'
-                  : 'border-transparent text-gray-500 hover:text-white'
+                className={`flex items-center gap-2 px-4 py-3 text-[10px] font-black tracking-[0.2em] uppercase transition-all border-b-2 ${activeTab === 'output'
+                  ? 'border-cyan-400 text-cyan-400 bg-cyan-400/5'
+                  : 'border-transparent text-slate-500 hover:text-white'
                   }`}
               >
-                <i className="fa-solid fa-terminal mr-2"></i>
-                Output
+                <i className="fa-solid fa-terminal text-xs"></i>
+                OUTPUT
                 {outputLog.length > 0 && (
-                  <span className="ml-2 px-1.5 py-0.5 text-xs bg-[#38bdf8]/20 text-[#38bdf8] rounded-full">
+                  <span className="px-1.5 py-0.5 text-[8px] bg-cyan-400 text-black rounded-full font-black">
                     {outputLog.length}
                   </span>
                 )}
               </button>
               <button
                 onClick={() => setActiveTab('input')}
-                className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'input'
-                  ? 'border-[#38bdf8] text-[#38bdf8]'
-                  : 'border-transparent text-gray-500 hover:text-white'
+                className={`flex items-center gap-2 px-4 py-3 text-[10px] font-black tracking-[0.2em] uppercase transition-all border-b-2 ${activeTab === 'input'
+                  ? 'border-cyan-400 text-cyan-400 bg-cyan-400/5'
+                  : 'border-transparent text-slate-500 hover:text-white'
                   }`}
               >
-                <i className="fa-solid fa-keyboard mr-2"></i>
-                Input
+                <i className="fa-solid fa-keyboard text-xs"></i>
+                SYSTEM.IN
               </button>
               <button
                 onClick={() => setActiveTab('debug')}
@@ -839,27 +839,26 @@ export default function RoomEditor() {
                 <i className="fa-solid fa-bug mr-2"></i>
                 Debug
               </button>
-            </div>
-
-            {/* Terminal Content */}
-            <div className="flex-1 overflow-hidden p-4 font-mono text-sm">
+                     {/* Terminal Content */}
+            <div className="flex-1 overflow-hidden p-4 font-mono text-[11px] font-medium tracking-tight">
               {activeTab === 'output' ? (
-                <div className="h-full overflow-y-auto space-y-3 pr-2">
+                <div className="h-full overflow-y-auto space-y-4 pr-2 custom-scrollbar">
                   {outputLog.length === 0 ? (
-                    <div className="h-full flex flex-col items-center justify-center text-gray-600">
-                      <i className="fa-solid fa-terminal text-4xl mb-4 opacity-20"></i>
-                      <p>Run your code to see the output here.</p>
+                    <div className="h-full flex flex-col items-center justify-center text-slate-600">
+                      <i className="fa-solid fa-terminal text-4xl mb-4 opacity-10"></i>
+                      <p className="font-black tracking-[0.2em]">WAITING FOR EXECUTION...</p>
                     </div>
                   ) : (
                     outputLog.map((o, idx) => (
-                      <div key={idx} className="bg-gray-800 rounded-lg border border-gray-700 p-4">
-                        <div className="flex items-center gap-3 text-xs text-gray-500 mb-2 pb-2 border-b border-gray-700">
-                          <span className="font-semibold text-indigo-400">{o.username}</span>
-                          <span>•</span>
-                          <span className="px-2 py-1 bg-gray-900 rounded text-xs">{o.language}</span>
-                          <span className="ml-auto">{o.timestamp}</span>
+                      <div key={idx} className="glass-card p-4 border-white/5 relative overflow-hidden group">
+                        <div className="absolute top-0 left-0 w-1 h-full bg-cyan-400 opacity-50"></div>
+                        <div className="flex items-center gap-3 text-[10px] font-black tracking-widest text-slate-500 mb-3 pb-3 border-b border-white/5 uppercase">
+                          <span className="text-cyan-400">{o.username}</span>
+                          <span className="opacity-20">•</span>
+                          <span className="text-slate-400">{o.language}</span>
+                          <span className="ml-auto opacity-50">{o.timestamp}</span>
                         </div>
-                        <pre className="whitespace-pre-wrap text-gray-300 font-mono leading-relaxed">
+                        <pre className="whitespace-pre-wrap text-slate-300 font-mono leading-relaxed bg-black/30 p-3 rounded-lg border border-white/5">
                           {o.output}
                         </pre>
                       </div>
@@ -867,18 +866,23 @@ export default function RoomEditor() {
                   )}
                 </div>
               ) : activeTab === 'input' ? (
-                <textarea
-                  value={stdin}
-                  onChange={(e) => setStdin(e.target.value)}
-                  placeholder="Enter standard input here..."
-                  className="w-full h-full bg-gray-800 border border-gray-700 rounded-lg p-4 text-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50 transition-all resize-none placeholder-gray-600 font-mono"
-                />
+                <div className="h-full relative">
+                  <textarea
+                    value={stdin}
+                    onChange={(e) => setStdin(e.target.value)}
+                    placeholder="INITIALIZE SYSTEM.IN // ENTER DATA HERE..."
+                    className="w-full h-full bg-black/40 border border-white/10 rounded-xl p-6 text-cyan-400 focus:outline-none focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/20 transition-all resize-none placeholder-slate-700 font-mono text-xs font-black tracking-widest"
+                  />
+                  <div className="absolute bottom-4 right-4 text-[8px] font-black tracking-widest text-slate-600 uppercase">
+                    INPUT_BUFFER_ACTIVE
+                  </div>
+                </div>
               ) : (
-                <div className="h-full flex items-center justify-center text-gray-600">
+                <div className="h-full flex items-center justify-center text-slate-700">
                   <div className="text-center">
-                    <i className="fa-solid fa-bug text-4xl mb-4 opacity-20"></i>
-                    <p>Debug console will appear here.</p>
-                    <p className="text-sm text-gray-500 mt-2">Set breakpoints and inspect variables</p>
+                    <i className="fa-solid fa-bug text-4xl mb-4 opacity-10"></i>
+                    <p className="font-black tracking-[0.2em] mb-2 uppercase">DEBUG_MODULE_OFFLINE</p>
+                    <p className="text-[10px] tracking-widest uppercase opacity-50">Attach debugger to Begin Session</p>
                   </div>
                 </div>
               )}
@@ -890,101 +894,104 @@ export default function RoomEditor() {
         {/* Mobile Overlay */}
         {isSidebarOpen && (
           <div
-            className="fixed inset-0 bg-black/50 z-40 md:hidden backdrop-blur-sm"
+            className="fixed inset-0 bg-black/80 z-40 md:hidden backdrop-blur-md"
             onClick={() => setIsSidebarOpen(false)}
           />
         )}
-        <div className={`fixed inset-y-0 right-0 z-50 w-80 bg-[#0f172a] border-l border-[#1e293b] flex flex-col transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${isSidebarOpen ? 'translate-x-0 shadow-2xl' : 'translate-x-full'}`}>
+        <div className={`fixed inset-y-0 right-0 z-50 w-85 glass border-l border-white/5 flex flex-col transform transition-transform duration-500 cubic-bezier(0.4, 0, 0.2, 1) md:relative md:translate-x-0 ${isSidebarOpen ? 'translate-x-0 shadow-[0_0_50px_rgba(0,0,0,0.5)]' : 'translate-x-full'}`}>
           {/* Sidebar Tabs */}
-          <div className="flex bg-[#020617] p-2 border-b border-[#1e293b]">
+          <div className="flex border-b border-white/5 p-1">
             <button
               onClick={() => setActiveSidebarTab('chat')}
-              className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-lg transition-all ${activeSidebarTab === 'chat'
-                ? 'bg-[#1e293b] text-[#38bdf8]'
-                : 'text-gray-500 hover:text-white hover:bg-[#1e293b]'
+              className={`flex-1 flex flex-col items-center justify-center gap-1 py-4 transition-all relative ${activeSidebarTab === 'chat'
+                ? 'text-cyan-400'
+                : 'text-slate-500 hover:text-white'
                 }`}
             >
-              <i className="fa-solid fa-comments"></i>
-              <span className="text-sm font-medium">Chat</span>
+              <i className="fa-solid fa-comments text-xs"></i>
+              <span className="text-[9px] font-black tracking-widest uppercase">COMM_LINK</span>
               {chat.length > 0 && (
-                <span className="px-1.5 py-0.5 text-xs bg-[#38bdf8] text-black rounded-full">
+                <span className="absolute top-2 right-4 px-1 py-0.5 text-[8px] bg-cyan-400 text-black rounded-full font-black animate-pulse">
                   {chat.length}
                 </span>
               )}
+              {activeSidebarTab === 'chat' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-cyan-400 shadow-[0_0_10px_var(--neon-cyan)]"></div>}
             </button>
             <button
               onClick={() => setActiveSidebarTab('participants')}
-              className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-lg transition-all ${activeSidebarTab === 'participants'
-                ? 'bg-[#1e293b] text-[#38bdf8]'
-                : 'text-gray-500 hover:text-white hover:bg-[#1e293b]'
+              className={`flex-1 flex flex-col items-center justify-center gap-1 py-4 transition-all relative ${activeSidebarTab === 'participants'
+                ? 'text-cyan-400'
+                : 'text-slate-500 hover:text-white'
                 }`}
             >
-              <i className="fa-solid fa-users"></i>
-              <span className="text-sm font-medium">Users</span>
-              <span className="text-xs text-green-400">{localUsers.length}</span>
+              <i className="fa-solid fa-users text-xs"></i>
+              <span className="text-[9px] font-black tracking-widest uppercase">NET_AGENTS</span>
+              <div className="absolute top-2 right-4 w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_5px_rgba(34,197,94,0.8)]"></div>
+              {activeSidebarTab === 'participants' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-cyan-400 shadow-[0_0_10px_var(--neon-cyan)]"></div>}
             </button>
             <button
               onClick={() => setActiveSidebarTab('history')}
-              className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-lg transition-all ${activeSidebarTab === 'history'
-                ? 'bg-[#1e293b] text-[#38bdf8]'
-                : 'text-gray-500 hover:text-white hover:bg-[#1e293b]'
+              className={`flex-1 flex flex-col items-center justify-center gap-1 py-4 transition-all relative ${activeSidebarTab === 'history'
+                ? 'text-cyan-400'
+                : 'text-slate-500 hover:text-white'
                 }`}
             >
-              <i className="fa-solid fa-history"></i>
-              <span className="text-sm font-medium">History</span>
+              <i className="fa-solid fa-clock-rotate-left text-xs"></i>
+              <span className="text-[9px] font-black tracking-widest uppercase">LOG_ARCHIVE</span>
+              {activeSidebarTab === 'history' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-cyan-400 shadow-[0_0_10px_var(--neon-cyan)]"></div>}
             </button>
-          </div>
+          </div>       </div>
 
           {/* Sidebar Content */}
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 overflow-hidden relative">
             {/* Chat Tab */}
             {activeSidebarTab === 'chat' && (
-              <div className="h-full flex flex-col">
+              <div className="h-full flex flex-col animate-in fade-in duration-500">
                 <div
                   ref={chatContainerRef}
-                  className="flex-1 overflow-y-auto p-4 space-y-4"
+                  className="flex-1 overflow-y-auto p-4 space-y-6 custom-scrollbar"
                 >
                   {(chat || []).length === 0 ? (
-                    <div className="h-full flex flex-col items-center justify-center text-gray-600 text-sm text-center px-4">
-                      <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center mb-3">
-                        <i className="fa-regular fa-comment-dots text-xl"></i>
+                    <div className="h-full flex flex-col items-center justify-center text-slate-600 text-[10px] font-black tracking-widest text-center px-4 uppercase">
+                      <div className="w-16 h-16 rounded-2xl glass flex items-center justify-center mb-6 border-white/5">
+                        <i className="fa-regular fa-comment-dots text-2xl opacity-20"></i>
                       </div>
-                      <p>No messages yet.</p>
-                      <p className="text-xs mt-1">Start the conversation!</p>
+                      <p>COMM_LINK_EMPTY</p>
+                      <p className="opacity-40 mt-2">Initialize transmission to begin</p>
                     </div>
                   ) : (
                     (chat || []).map((m: any, idx: number) => {
                       const isMe = m.username === currentUser?.username
                       return (
-                        <div key={idx} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
-                          <div className={`max-w-[80%] ${isMe ? 'ml-auto' : ''}`}>
+                        <div key={idx} className={`flex ${isMe ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2`}>
+                          <div className={`max-w-[85%] ${isMe ? 'ml-auto' : ''}`}>
                             {!isMe && (
-                              <div className="flex items-center gap-2 mb-1">
+                              <div className="flex items-center gap-2 mb-2 ml-1">
                                 <div
-                                  className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white"
+                                  className="w-5 h-5 rounded-lg flex items-center justify-center text-[10px] font-black text-white shadow-[0_0_10px_rgba(0,0,0,0.5)]"
                                   style={{ backgroundColor: getUserColor(m.username) }}
                                 >
                                   {m.username.charAt(0).toUpperCase()}
                                 </div>
-                                <span className="text-xs font-medium text-gray-400">{m.username}</span>
+                                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{m.username}</span>
                               </div>
                             )}
                             <div
-                              className={`px-4 py-3 rounded-2xl ${isMe
-                                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-br-none'
-                                : 'bg-gray-800 text-gray-200 rounded-bl-none'
+                              className={`px-4 py-3 rounded-2xl text-xs font-medium leading-relaxed ${isMe
+                                ? 'bg-cyan-400/90 text-black font-bold rounded-tr-none shadow-[0_0_20px_rgba(0,243,255,0.2)]'
+                                : 'glass border-white/5 text-slate-200 rounded-tl-none'
                                 }`}
                             >
                               {m.message}
                             </div>
-                            <span className="text-[11px] text-gray-500 mt-1 block text-right">
+                            <span className="text-[8px] font-black text-slate-600 mt-1.5 block px-1 tracking-widest">
                               {(() => {
                                 try {
                                   return format(parseISO(m.at), 'HH:mm')
                                 } catch {
-                                  return m.at || 'Just now'
+                                  return m.at || 'SYNCED'
                                 }
-                              })()}
+                              })().toUpperCase()}
                             </span>
                           </div>
                         </div>
@@ -994,22 +1001,21 @@ export default function RoomEditor() {
                   <div ref={chatEndRef} />
                 </div>
 
-                <div className="p-4 border-t border-gray-800">
-                  <div className="relative">
+                <div className="p-4 glass-card border-x-0 border-b-0 border-t-white/5 rounded-none mt-auto">
+                  <div className="relative group">
                     <input
                       value={chatInput}
                       onChange={(e) => setChatInput(e.target.value)}
                       onKeyPress={handleKeyPress}
-                      placeholder="Type a message..."
-                      className="w-full bg-gray-800 border border-gray-700 rounded-full pl-4 pr-12 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50 transition-all placeholder-gray-500"
+                      placeholder="ENTER TRANSMISSION..."
+                      className="w-full glass-input pl-6 pr-14 py-4 uppercase font-black tracking-widest text-[10px]"
                     />
                     <button
                       onClick={handleSendChat}
                       disabled={!chatInput.trim()}
-                      className="absolute right-2 top-2 flex items-center gap-2 px-4 py-1.5 bg-[#38bdf8] text-black rounded-full text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="absolute right-2 top-2 bottom-2 aspect-square flex items-center justify-center bg-cyan-400 text-black rounded-xl transition-all hover:scale-105 active:scale-95 disabled:opacity-20 disabled:grayscale shadow-[0_0_15px_rgba(0,243,255,0.3)]"
                     >
                       <i className="fa-solid fa-paper-plane text-xs"></i>
-                      <span>Send</span>
                     </button>
                   </div>
                 </div>
@@ -1018,37 +1024,33 @@ export default function RoomEditor() {
 
             {/* Participants Tab */}
             {activeSidebarTab === 'participants' && (
-              <div className="h-full overflow-y-auto p-4 space-y-3">
+              <div className="h-full overflow-y-auto p-4 space-y-4 custom-scrollbar animate-in fade-in duration-500">
+                <div className="text-[10px] font-black tracking-widest text-slate-500 uppercase mb-2 px-2">AUTHORIZED_AGENTS ({localUsers.length})</div>
                 {localUsers.map((user) => (
-                  <div key={user.id} className="flex items-center gap-3 p-3 bg-gray-800 rounded-lg border border-gray-700">
-                    <div className="relative">
+                  <div key={user.id} className="glass-card flex items-center gap-4 p-4 border-white/5 group relative overflow-hidden transition-all hover:border-cyan-400/30">
+                    <div className="relative z-10">
                       <div
-                        className="w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold text-white shadow-lg"
+                        className="w-12 h-12 rounded-xl flex items-center justify-center text-lg font-black text-white shadow-2xl relative overflow-hidden"
                         style={{ backgroundColor: user.color }}
                       >
-                        {user.name.charAt(0).toUpperCase()}
+                        <div className="absolute inset-0 bg-black/20"></div>
+                        <span className="relative z-10">{user.name.charAt(0).toUpperCase()}</span>
                       </div>
-                      <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-gray-800 ${user.status === 'typing' ? 'bg-yellow-500 animate-pulse' : 'bg-green-500'
+                      <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-4 border-[#0f172a] ${user.status === 'typing' ? 'bg-yellow-400 animate-pulse' : 'bg-green-400 shadow-[0_0_10px_rgba(34,197,94,0.5)]'
                         }`}></div>
                     </div>
-                    <div className="flex-1">
-                      <div className="font-medium text-gray-200">{user.name}</div>
-                      <div className="text-xs text-gray-400 flex items-center gap-1">
+                    <div className="flex-1 relative z-10">
+                      <div className="font-black text-white text-xs tracking-tight group-hover:text-cyan-400 transition-colors uppercase">{user.name}</div>
+                      <div className="text-[9px] font-black tracking-widest flex items-center gap-2 mt-1">
                         {user.status === 'typing' ? (
-                          <>
-                            <i className="fa-solid fa-pencil-alt text-yellow-500"></i>
-                            <span className="text-yellow-500">Typing...</span>
-                          </>
+                          <span className="text-yellow-400 animate-pulse">UPLINK_ACTIVE</span>
                         ) : (
-                          <>
-                            <i className="fa-solid fa-circle text-green-500 text-[8px]"></i>
-                            <span>Online</span>
-                          </>
+                          <span className="text-slate-500">STABLE_CONNECTION</span>
                         )}
                       </div>
                     </div>
                     {user.name === currentUser?.username && (
-                      <span className="px-2 py-1 text-xs bg-indigo-500/20 text-indigo-400 rounded">You</span>
+                      <span className="px-2 py-0.5 text-[8px] font-black bg-cyan-400 text-black rounded uppercase tracking-widest relative z-10">SELF</span>
                     )}
                   </div>
                 ))}
@@ -1057,30 +1059,31 @@ export default function RoomEditor() {
 
             {/* History Tab */}
             {activeSidebarTab === 'history' && (
-              <div className="h-full overflow-y-auto p-4 space-y-3">
+              <div className="h-full overflow-y-auto p-4 space-y-4 custom-scrollbar animate-in fade-in duration-500">
+                <div className="text-[10px] font-black tracking-widest text-slate-500 uppercase mb-2 px-2">LOG_DATABASE</div>
                 {savedFiles.length === 0 ? (
-                  <div className="h-full flex flex-col items-center justify-center text-gray-600">
-                    <i className="fa-solid fa-history text-4xl mb-4 opacity-20"></i>
-                    <p>No history yet.</p>
-                    <p className="text-sm text-gray-500 mt-2">Run and save code to see history</p>
+                  <div className="h-full flex flex-col items-center justify-center text-slate-600 text-[10px] font-black tracking-widest uppercase">
+                    <i className="fa-solid fa-history text-4xl mb-6 opacity-10"></i>
+                    <p>DATABASE_EMPTY</p>
+                    <p className="opacity-40 mt-2">Zero records found</p>
                   </div>
                 ) : (
                   savedFiles.map((file, idx) => (
-                    <div key={idx} className="p-3 bg-gray-800 rounded-lg border border-gray-700 hover:border-indigo-500/50 transition-colors cursor-pointer">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-gray-200">Execution #{savedFiles.length - idx}</span>
-                        <span className="text-xs text-gray-500">
-                          {new Date(file.createdAt).toLocaleDateString()}
+                    <div key={idx} className="glass-card p-5 border-white/5 hover:border-cyan-400/30 transition-all cursor-pointer group hover:bg-white/5">
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-[10px] font-black text-white tracking-widest uppercase group-hover:text-cyan-400 transition-colors">OP_{savedFiles.length - idx}</span>
+                        <span className="text-[9px] font-black text-slate-500 tracking-widest">
+                          {new Date(file.createdAt).toLocaleDateString().toUpperCase()}
                         </span>
                       </div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="px-2 py-1 text-xs bg-indigo-500/10 text-indigo-400 rounded">
+                      <div className="flex items-center gap-2 mb-4">
+                        <span className="px-2 py-0.5 text-[9px] font-black bg-white/5 text-slate-300 rounded uppercase tracking-widest">
                           {file.language}
                         </span>
-                        <span className="text-xs text-gray-400 truncate">by {file.username || 'Unknown'}</span>
+                        <span className="text-[9px] font-black text-slate-500 truncate uppercase">BY {file.username || 'ANON'}</span>
                       </div>
-                      <pre className="text-xs text-gray-400 font-mono truncate bg-gray-900/50 p-2 rounded">
-                        {file.code ? file.code.substring(0, 100) + '...' : 'No code available'}
+                      <pre className="text-[9px] text-slate-600 font-mono truncate bg-black/40 p-3 rounded-lg border border-white/5 group-hover:text-slate-400 transition-colors">
+                        {file.code ? file.code.substring(0, 100) + '...' : 'NULL_DATA'}
                       </pre>
                     </div>
                   ))
@@ -1093,80 +1096,79 @@ export default function RoomEditor() {
 
       {/* Saved Files Modal */}
       {showSavedFiles && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden">
-            <div className="p-6 border-b border-gray-800 flex items-center justify-between bg-gray-950">
-              <h2 className="text-xl font-bold text-white flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
-                  <i className="fa-solid fa-folder-open text-white"></i>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-in fade-in duration-300">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setShowSavedFiles(false)} />
+          <div className="relative glass-card border-white/10 w-full max-w-5xl overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.8)] flex flex-col max-h-[90vh]">
+            <div className="p-8 border-b border-white/5 flex items-center justify-between">
+              <div className="flex items-center gap-6">
+                <div className="w-14 h-14 glass flex items-center justify-center rounded-2xl border-cyan-400/20 shadow-[0_0_20px_rgba(0,243,255,0.1)]">
+                  <i className="fa-solid fa-database text-2xl text-cyan-400"></i>
                 </div>
                 <div>
-                  <div>Saved Executions</div>
-                  <div className="text-sm text-gray-400 font-normal">View and manage your saved code executions</div>
+                  <h2 className="text-2xl font-black text-white tracking-tighter uppercase">MISSION_LOGS <span className="neon-text-cyan">DATABASE</span></h2>
+                  <p className="text-[10px] font-black text-slate-500 tracking-[0.3em] uppercase mt-1">Authorized Access Only // Operational History</p>
                 </div>
-              </h2>
+              </div>
               <button
                 onClick={() => setShowSavedFiles(false)}
-                className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-800 text-gray-400 hover:text-white transition-colors"
+                className="w-12 h-12 rounded-xl glass hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 transition-all flex items-center justify-center border-white/5"
               >
-                <i className="fa-solid fa-xmark"></i>
+                <i className="fa-solid fa-xmark text-lg"></i>
               </button>
             </div>
 
-            <div className="max-h-[60vh] overflow-y-auto">
+            <div className="flex-1 overflow-y-auto custom-scrollbar p-8">
               {isLoadingFiles ? (
-                <div className="p-12 text-center text-gray-500">
-                  <i className="fa-solid fa-circle-notch animate-spin text-2xl mb-4"></i>
-                  <p>Loading saved files...</p>
+                <div className="py-24 text-center">
+                  <div className="w-16 h-16 border-4 border-cyan-400/20 border-t-cyan-400 rounded-full animate-spin mx-auto mb-6"></div>
+                  <p className="text-cyan-400 font-black tracking-widest uppercase text-xs animate-pulse">Connecting to Core Database...</p>
                 </div>
               ) : savedFiles.length === 0 ? (
-                <div className="p-12 text-center text-gray-500">
-                  <div className="w-16 h-16 bg-gray-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <i className="fa-regular fa-folder-open text-2xl"></i>
-                  </div>
-                  <p className="text-lg text-gray-400 mb-2">No saved executions yet</p>
-                  <p className="text-gray-600">Run and save your code to see it here</p>
+                <div className="py-24 text-center">
+                  <div className="text-6xl mb-8 opacity-20">📂</div>
+                  <h3 className="text-white text-xl font-black tracking-widest uppercase mb-4">ARCHIVE_IS_EMPTY</h3>
+                  <p className="text-slate-500 text-xs font-medium tracking-widest">No mission data has been logged in this sector.</p>
                 </div>
               ) : (
-                <div className="p-6 grid gap-4">
+                <div className="grid gap-8">
                   {savedFiles.map((file, idx) => (
-                    <div key={idx} className="bg-gray-800 rounded-xl border border-gray-700 p-5 hover:border-indigo-500/50 transition-all group">
-                      <div className="flex items-start justify-between mb-4">
-                        <div>
-                          <div className="flex items-center gap-3 mb-2">
-                            <span className="px-3 py-1 rounded-full text-sm font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                              {file.language}
-                            </span>
-                            <span className="text-sm text-gray-400">
-                              {new Date(file.createdAt).toLocaleString()}
-                            </span>
+                    <div key={idx} className="glass-card p-6 border-white/5 group hover:border-cyan-400/30 transition-all">
+                      <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-8 gap-4">
+                        <div className="flex items-center gap-6">
+                          <span className="px-4 py-1.5 rounded-full text-[10px] font-black bg-cyan-400 text-black uppercase tracking-widest">
+                            {file.language}
+                          </span>
+                          <div className="text-[10px] font-black tracking-widest text-slate-400 uppercase">
+                            <i className="fa-solid fa-clock mr-2 text-cyan-400"></i>
+                            {new Date(file.createdAt).toLocaleString().toUpperCase()}
                           </div>
-                          <div className="text-sm text-gray-400 mb-1">
-                            Saved by <span className="text-indigo-400">{file.username || 'Unknown'}</span>
+                          <div className="text-[10px] font-black tracking-widest text-slate-400 uppercase">
+                            <i className="fa-solid fa-user mr-2 text-magenta-400"></i>
+                            OPERATOR: <span className="text-white">{file.username || 'UNKNOWN'}</span>
                           </div>
                         </div>
-                        <button className="opacity-0 group-hover:opacity-100 p-2 hover:bg-gray-700 rounded-lg transition-all">
-                          <i className="fa-solid fa-ellipsis-vertical text-gray-400"></i>
+                        <button className="lg:opacity-0 group-hover:opacity-100 px-6 py-2 rounded-lg glass border-white/10 text-slate-400 hover:text-white transition-all text-[10px] font-black tracking-widest uppercase">
+                          MANAGE_LOG
                         </button>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                          <div className="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wider flex items-center gap-2">
-                            <i className="fa-solid fa-code"></i>
-                            Code
+                      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                        <div className="bg-black/40 rounded-2xl p-6 border border-white/5">
+                          <div className="text-[9px] font-black text-slate-500 mb-4 uppercase tracking-[0.3em] flex items-center gap-3">
+                            <div className="w-1.5 h-1.5 rounded-full bg-cyan-400"></div>
+                            SOURCE_ENCODING
                           </div>
-                          <pre className="text-sm text-gray-300 font-mono overflow-x-auto whitespace-pre-wrap max-h-32">
-                            {file.code || 'No code available'}
+                          <pre className="text-xs text-slate-300 font-mono overflow-x-auto whitespace-pre-wrap max-h-48 custom-scrollbar custom-scrollbar-thin">
+                            {file.code || 'NO_CODE_LOGGED'}
                           </pre>
                         </div>
-                        <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                          <div className="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wider flex items-center gap-2">
-                            <i className="fa-solid fa-terminal"></i>
-                            Output
+                        <div className="bg-black/40 rounded-2xl p-6 border border-white/5">
+                          <div className="text-[9px] font-black text-slate-500 mb-4 uppercase tracking-[0.3em] flex items-center gap-3">
+                            <div className="w-1.5 h-1.5 rounded-full bg-green-400"></div>
+                            OUTPUT_RESULT
                           </div>
-                          <pre className="text-sm text-green-400 font-mono overflow-x-auto whitespace-pre-wrap max-h-32">
-                            {file.output || 'No output available'}
+                          <pre className="text-xs text-green-400/80 font-mono overflow-x-auto whitespace-pre-wrap max-h-48 custom-scrollbar custom-scrollbar-thin">
+                            {file.output || 'NO_OUTPUT_LOGGED'}
                           </pre>
                         </div>
                       </div>
@@ -1181,32 +1183,33 @@ export default function RoomEditor() {
 
       {/* Join Requests Modal (Owner Only) */}
       {joinRequests.length > 0 && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-gray-900 border border-indigo-500/30 rounded-2xl shadow-2xl shadow-indigo-500/20 w-full max-w-sm overflow-hidden">
-            <div className="p-4 border-b border-gray-800 bg-gray-950 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center">
-                <i className="fa-solid fa-bell text-indigo-400"></i>
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 animate-in zoom-in duration-300">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-md" />
+          <div className="relative glass-card border-cyan-400/30 w-full max-w-sm overflow-hidden shadow-[0_0_50px_rgba(0,243,255,0.2)]">
+            <div className="p-6 border-b border-white/5 bg-white/5 flex items-center gap-4">
+              <div className="w-10 h-10 rounded-xl glass border-cyan-400/20 flex items-center justify-center animate-pulse">
+                <i className="fa-solid fa-satellite-dish text-cyan-400"></i>
               </div>
-              <h2 className="text-lg font-bold text-white">Join Requests ({joinRequests.length})</h2>
+              <h2 className="text-sm font-black text-white tracking-widest uppercase">INCOMING_SIGNAL ({joinRequests.length})</h2>
             </div>
-            <div className="max-h-[60vh] overflow-y-auto">
+            <div className="max-h-[60vh] overflow-y-auto p-4 space-y-4">
               {joinRequests.map((req, idx) => (
-                <div key={idx} className="p-4 border-b border-gray-800 hover:bg-gray-800/50 transition-colors">
-                  <p className="text-gray-300 mb-3 text-sm">
-                    <span className="font-bold text-white">{req.username}</span> wants to join the room.
+                <div key={idx} className="glass-card p-6 border-white/5 animate-in slide-in-from-top-4">
+                  <p className="text-slate-300 mb-6 text-[11px] leading-relaxed font-medium uppercase tracking-wider">
+                    <span className="font-black text-cyan-400">{req.username}</span> is requesting biometric access to this sector.
                   </p>
-                  <div className="flex gap-2">
+                  <div className="flex gap-3">
                     <button
                       onClick={() => handleProcessJoinRequest(req, false)}
-                      className="flex-1 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm font-medium rounded-lg transition-colors"
+                      className="flex-1 py-3 bg-white/5 hover:bg-rose-500 hover:text-white text-slate-400 text-[10px] font-black tracking-widest rounded-xl transition-all uppercase"
                     >
-                      Deny
+                      DENY
                     </button>
                     <button
                       onClick={() => handleProcessJoinRequest(req, true)}
-                      className="flex-1 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors"
+                      className="flex-1 py-3 neon-button-cyan text-[10px] font-black tracking-widest rounded-xl uppercase"
                     >
-                      Allow
+                      GRANT
                     </button>
                   </div>
                 </div>
@@ -1218,42 +1221,48 @@ export default function RoomEditor() {
 
       {/* Create File Modal */}
       {showCreateFileModal && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
-            <div className="p-6 border-b border-gray-800 bg-gray-950">
-              <h2 className="text-xl font-bold text-white flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
-                  <i className="fa-solid fa-file-circle-plus text-white"></i>
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 animate-in zoom-in duration-300">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setShowCreateFileModal(false)} />
+          <div className="relative glass-card border-white/10 w-full max-w-md overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.8)]">
+            <div className="p-8 border-b border-white/5 bg-white/5">
+              <h2 className="text-xl font-black text-white flex items-center gap-4 tracking-tighter uppercase">
+                <div className="w-12 h-12 glass border-cyan-400/20 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(0,243,255,0.1)]">
+                  <i className="fa-solid fa-file-circle-plus text-cyan-400 text-xl"></i>
                 </div>
-                Create New File
+                INITIALIZE_NEW <span className="neon-text-cyan">MODULE</span>
               </h2>
             </div>
 
-            <div className="p-6 space-y-4">
+            <div className="p-8 space-y-8">
               {/* Language Selection */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Language
+                <label className="block text-[10px] font-black text-slate-500 mb-3 uppercase tracking-[0.2em]">
+                  CORE_ENVIRONMENT
                 </label>
-                <select
-                  value={newFileLanguage}
-                  onChange={(e) => setNewFileLanguage(e.target.value)}
-                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50 transition-all"
-                >
-                  {languages.map((lang) => (
-                    <option key={lang.key} value={lang.key}>
-                      {lang.label}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative group">
+                  <select
+                    value={newFileLanguage}
+                    onChange={(e) => setNewFileLanguage(e.target.value)}
+                    className="w-full glass-input px-6 py-4 appearance-none text-cyan-400 font-black tracking-widest text-[10px] uppercase"
+                  >
+                    {languages.map((lang) => (
+                      <option key={lang.key} value={lang.key} className="bg-[#0f172a] text-white">
+                        {lang.label.toUpperCase()}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-slate-600 group-hover:text-cyan-400 transition-colors">
+                    <i className="fa-solid fa-chevron-down text-xs"></i>
+                  </div>
+                </div>
               </div>
 
               {/* Filename Input */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  File Name
+                <label className="block text-[10px] font-black text-slate-500 mb-3 uppercase tracking-[0.2em]">
+                  MODULE_IDENTIFIER
                 </label>
-                <div className="relative">
+                <div className="relative group">
                   <input
                     type="text"
                     value={newFileName}
@@ -1261,33 +1270,33 @@ export default function RoomEditor() {
                     onKeyPress={(e) => {
                       if (e.key === 'Enter') handleCreateFile()
                     }}
-                    placeholder={`e.g., main${getFileExtension(newFileLanguage)}`}
-                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50 transition-all placeholder-gray-500"
+                    placeholder={`e.g., MAIN${getFileExtension(newFileLanguage).toUpperCase()}`}
+                    className="w-full glass-input px-6 py-4 text-white font-black tracking-widest text-[10px] uppercase placeholder-slate-700"
                     autoFocus
                   />
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500 bg-gray-900 px-2 py-1 rounded">
-                    {getFileExtension(newFileLanguage)}
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 px-3 py-1 bg-white/5 text-[8px] font-black text-slate-500 rounded border border-white/5">
+                    {getFileExtension(newFileLanguage).toUpperCase()}
                   </div>
                 </div>
-                <p className="mt-1.5 text-xs text-gray-500">
-                  Extension will be added automatically if not provided
+                <p className="mt-4 text-[9px] font-black text-slate-600 tracking-widest uppercase text-center opacity-60">
+                  SYSTEM will Automatically Append extension if payload is Null
                 </p>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3 pt-2">
+              <div className="flex gap-4 pt-4">
                 <button
                   onClick={() => setShowCreateFileModal(false)}
-                  className="flex-1 px-4 py-2.5 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg font-medium transition-colors"
+                  className="flex-1 px-6 py-4 glass border-white/5 hover:bg-white/10 text-slate-400 font-black tracking-widest text-[10px] rounded-2xl transition-all uppercase"
                 >
-                  Cancel
+                  ABORT
                 </button>
                 <button
                   onClick={handleCreateFile}
                   disabled={!newFileName.trim()}
-                  className="flex-1 px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-lg font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-indigo-500/25"
+                  className="flex-1 px-6 py-4 neon-button-cyan font-black tracking-widest text-[10px] rounded-2xl transition-all disabled:opacity-20 disabled:grayscale uppercase"
                 >
-                  Create File
+                  INITIALIZE_MODULE
                 </button>
               </div>
             </div>
