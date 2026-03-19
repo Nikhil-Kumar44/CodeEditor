@@ -36,34 +36,30 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0f172a] bg-[url('/grid.svg')] bg-center flex items-center justify-center p-4 font-sans relative overflow-hidden">
+    <div className="min-h-screen bg-dots text-gray-300 flex items-center justify-center p-4 font-sans relative overflow-hidden">
       {/* Background gradients */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full mix-blend-screen opacity-50 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#020617] to-transparent from-10%"></div>
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[#38bdf8] rounded-full blur-[120px] opacity-20 animate-pulse"></div>
-        <div className="absolute -bottom-1/4 right-1/4 w-[600px] h-[600px] bg-indigo-500 rounded-full blur-[150px] opacity-10"></div>
-      </div>
+      <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-[radial-gradient(circle,rgba(0,243,255,0.1)_0%,transparent_70%)] z-0 pointer-events-none"></div>
+      <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-[radial-gradient(circle,rgba(168,85,247,0.1)_0%,transparent_70%)] z-0 pointer-events-none"></div>
 
-      <div className="relative w-full max-w-md">
+      <div className="relative w-full max-w-md z-10">
         {/* Logo/Header */}
-        <div className="text-center mb-8 relative z-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#38bdf8] rounded-2xl p-[2px] shadow-2xl shadow-[#38bdf8]/20 mb-6">
-            <div className="w-full h-full bg-[#0f172a] rounded-[14px] flex items-center justify-center">
-              <img src={logo} alt="Logo" className="w-[80%] h-[80%] object-cover" />
-            </div>
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center justify-center w-20 h-20 glass rounded-3xl relative group mb-6 overflow-hidden">
+            <div className="absolute inset-0 bg-cyan-400/10 transition-colors"></div>
+            <img src={logo} alt="Logo" className="w-12 h-12 object-contain relative z-10 filter drop-shadow(0 0 8px rgba(0,243,255,0.5))" />
           </div>
-          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 mb-2">
-            Reset Password
+          <h1 className="text-4xl font-black tracking-tighter uppercase mb-2">
+            SECURE<span className="neon-text-cyan">RECOVERY</span>
           </h1>
-          <p className="text-gray-400">Enter your email to receive a reset link</p>
+          <p className="text-[10px] font-black tracking-[0.3em] text-slate-500 uppercase">Input Credentials for Reset Protocol</p>
         </div>
 
         {/* Card */}
-        <div className="bg-[#020617]/50 backdrop-blur-xl border border-[#1e293b] p-8 rounded-3xl shadow-2xl relative z-10">
-          <form onSubmit={onSubmit} className="space-y-6">
-            <div className="space-y-2 relative">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300 ml-1">
-                Email Address
+        <div className="glass-card p-10 border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.3)]">
+          <form onSubmit={onSubmit} className="space-y-8">
+            <div className="space-y-3">
+              <label htmlFor="email" className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">
+                IDENTITY_EMAIL
               </label>
               <div className="relative group">
                 <input
@@ -71,27 +67,26 @@ export default function ForgotPassword() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-[#0f172a] border border-[#1e293b] rounded-xl px-4 py-3.5 text-white pl-11 focus:outline-none focus:border-[#38bdf8] focus:ring-1 focus:ring-[#38bdf8]/50 transition-all placeholder-gray-500 group-hover:border-gray-700"
-                  placeholder="name@example.com"
+                  className="glass-input pl-12 pr-4 py-4 uppercase font-black tracking-widest text-[10px]"
+                  placeholder="AGENT@SECTOR.COM"
                   required
                 />
-                <i className="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-[#38bdf8] transition-colors"></i>
+                <i className="fa-regular fa-envelope absolute left-5 top-1/2 -translate-y-1/2 text-slate-600 group-focus-within:text-cyan-400 transition-colors"></i>
               </div>
             </div>
 
             <button
               type="submit"
               disabled={isLoading || !email}
-              className="w-full bg-[#38bdf8] hover:bg-sky-400 text-black font-semibold py-3.5 px-4 rounded-xl shadow-lg shadow-[#38bdf8]/20 hover:shadow-xl hover:shadow-[#38bdf8]/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden"
+              className="w-full neon-button-cyan py-4 font-black tracking-[0.2em] text-xs uppercase"
             >
-              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
-              <span className="relative flex items-center justify-center gap-2">
+              <span className="flex items-center justify-center gap-3">
                 {isLoading ? (
-                  <i className="fa-solid fa-circle-notch animate-spin"></i>
+                  <i className="fa-solid fa-circle-notch animate-spin text-sm"></i>
                 ) : (
                   <>
-                    Send Reset Link
-                    <i className="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition-transform"></i>
+                    INITIALIZE_RESET
+                    <i className="fa-solid fa-bolt-lightning text-xs group-hover:scale-110 transition-transform"></i>
                   </>
                 )}
               </span>
@@ -99,13 +94,11 @@ export default function ForgotPassword() {
           </form>
 
           {/* Footer */}
-          <div className="mt-8 text-center text-sm">
-            <p className="text-gray-400">
-              Remember your password?{' '}
-              <Link to="/login" className="text-[#38bdf8] hover:text-sky-400 font-medium hover:underline transition-all">
-                Back to Login
-              </Link>
-            </p>
+          <div className="mt-10 pt-8 border-t border-white/5 text-center">
+            <Link to="/login" className="text-[10px] font-black tracking-widest text-slate-500 hover:text-cyan-400 uppercase transition-all flex items-center justify-center gap-2 group">
+              <i className="fa-solid fa-arrow-left-long group-hover:-translate-x-1 transition-transform"></i>
+              RETURN_TO_BASE
+            </Link>
           </div>
         </div>
       </div>

@@ -8,6 +8,7 @@ import RoomEditor from './pages/RoomEditor'
 import Landing from './pages/Landing'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
+import History from './pages/History'
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/rooms" element={<Rooms />} />
         {/* Added: Room editor route for joined rooms */}
         <Route path="/rooms/:roomId" element={<RoomEditor />} />
+        <Route path="/history" element={<History />} />
       </Route>
     </Routes>
   )

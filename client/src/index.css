@@ -2,189 +2,139 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --neon-cyan: #00f3ff;
+  --neon-purple: #bc13fe;
+  --neon-pink: #ff00ff;
+  --neon-green: #b6ff00;
+  --neon-blue: #0066ff;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --dark-bg: #020617;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Outfit', 'Inter', -apple-system, sans-serif;
+  background-color: var(--dark-bg);
+  color: #fff;
+  overflow-x: hidden;
 }
 
 #root {
-  width: 100%;
   min-height: 100vh;
+  background: radial-gradient(circle at top right, rgba(0, 243, 255, 0.05), transparent),
+              radial-gradient(circle at bottom left, rgba(188, 19, 254, 0.05), transparent);
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* === Global Reset & Font Setup === */
-body {
-  margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  @apply bg-[#0f172a] text-white;
+/* Neon utilities */
+.neon-text-cyan {
+  text-shadow: 0 0 10px var(--neon-cyan);
+  color: var(--neon-cyan);
 }
 
-#root {
-  width: 100%;
-  min-height: 100vh;
-  @apply bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900;
+.neon-border-cyan {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 10px var(--neon-cyan);
 }
 
-/* === Scrollbar Customization === */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* Glassmorphism Utilities */
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-::-webkit-scrollbar-track {
-  background: #0f172a;
+.glass-card {
+  background: rgba(2, 6, 23, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.5rem;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #334155;
+.glass-input {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 1rem;
+  color: white;
+  transition: all 0.3s ease !important;
+}
+
+.glass-input:focus {
+  border-color: rgba(0, 243, 255, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
+  outline: none;
+}
+
+/* Background Patterns */
+.bg-dots {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Neon Buttons */
+.neon-button-cyan {
+  background: var(--neon-cyan) !important;
+  color: #000 !important;
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.3) !important;
+  transition: all 0.3s ease !important;
+  border-radius: 1rem !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.neon-button-cyan:hover {
+  transform: scale(1.02) !important;
+  box-shadow: 0 0 25px rgba(0, 243, 255, 0.5) !important;
+}
+
+.neon-button-cyan:active {
+  transform: scale(0.98) !important;
+}
+
+/* Custom Scrollbar Utilities */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-cyan);
 }
 
-/* === Editor & Panels === */
-.editor-container {
-  @apply rounded-xl border border-white/10 bg-[#1e293b] shadow-inner transition-all duration-200;
+/* Animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
 }
 
-.output-terminal {
-  @apply bg-[#111827] text-slate-100 border border-white/10 rounded-lg shadow-lg p-4;
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }
 
-/* === Buttons === */
-.btn {
-  @apply px-4 py-2 text-sm font-medium rounded-md transition-all duration-200;
-}
-
-.btn-primary {
-  @apply bg-indigo-600 hover:bg-indigo-700 text-white shadow-md;
-}
-
-.btn-secondary {
-  @apply bg-white/10 hover:bg-white/20 text-slate-200;
-}
-
-/* === Tabs === */
-.tab-active {
-  @apply border-b-2 border-indigo-500 text-indigo-400 font-semibold;
-}
-
-.tab-inactive {
-  @apply text-slate-400 hover:text-indigo-300 cursor-pointer;
-}
-
-/* === Input Boxes & Textareas === */
-.input-box {
-  @apply bg-white/10 border border-white/10 rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition;
-}
-
-/* === Chat Bubbles === */
-.chat-bubble {
-  @apply bg-[#1e293b] text-slate-200 rounded-lg px-3 py-2 w-fit max-w-[80%];
-}
-
-.chat-bubble.me {
-  @apply bg-indigo-600 text-white self-end;
-}
-
-.chat-timestamp {
-  @apply text-xs text-slate-400 mt-1;
-}
-
-/* === Resizer === */
-.resizer {
-  @apply h-2 bg-white/10 hover:bg-white/20 cursor-ns-resize transition-all duration-150 rounded;
-}
-
-/* === Utility Animations === */
-.fade-in {
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(5px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* === Headers & Layout === */
-header {
-  @apply bg-[#1e293b] border-b border-white/10 shadow-md flex justify-between items-center px-6 py-3;
-}
-
-header h1 {
-  @apply text-xl font-semibold text-indigo-400 flex items-center gap-2;
-}
-
-/* === Panels === */
-.panel {
-  @apply bg-[#1e293b] border border-white/10 rounded-xl shadow-inner p-4;
-}
-
-/* === History Cards === */
-.history-item {
-  @apply bg-white/5 hover:bg-white/10 p-2 rounded-md transition-all cursor-pointer;
-}
-
-.history-item .title {
-  @apply text-emerald-300 font-semibold;
-}
-
-.history-item .time {
-  @apply text-xs text-slate-400;
-}
-
-/* === Sidebar === */
-.sidebar {
-  @apply bg-[#1e293b] border-l border-white/10 flex flex-col;
-}
-
-/* === Active User Badges === */
-.user-badge {
-  @apply inline-flex items-center gap-2 text-sm text-slate-300;
-}
-
-/* === Input/Output Tabs === */
-.io-tab {
-  @apply flex items-center gap-2 text-sm px-4 py-2 cursor-pointer;
-}
-
-.io-tab.active {
-  @apply text-indigo-400 border-b-2 border-indigo-500;
-}
-
-.io-tab.inactive {
-  @apply text-slate-400 hover:text-indigo-300;
-}
-
-/* === Glowing Highlights for Interactive Elements === */
-button:hover,
-select:focus,
-textarea:focus,
-input:focus {
-  box-shadow: 0 0 6px rgba(99, 102, 241, 0.5);
-}
-
-/* === Smooth Transitions === */
+/* Global Transitions and Fixes */
 * {
-  transition: all 0.2s ease-in-out;
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
