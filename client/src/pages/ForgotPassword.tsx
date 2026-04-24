@@ -12,7 +12,6 @@ export default function ForgotPassword() {
   async function onSubmit(e: FormEvent) {
     e.preventDefault()
 
-    // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
       show('Please enter a valid email address', 'error')
@@ -36,68 +35,60 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div className="min-h-screen bg-dots text-gray-300 flex items-center justify-center p-4 font-sans relative overflow-hidden">
-      {/* Background gradients */}
-      <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-[radial-gradient(circle,rgba(0,243,255,0.1)_0%,transparent_70%)] z-0 pointer-events-none"></div>
-      <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-[radial-gradient(circle,rgba(168,85,247,0.1)_0%,transparent_70%)] z-0 pointer-events-none"></div>
-
-      <div className="relative w-full max-w-md z-10">
+    <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-4 font-sans relative overflow-hidden bg-dots">
+      <div className="relative w-full max-w-sm z-10 text-center">
         {/* Logo/Header */}
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-20 h-20 glass rounded-3xl relative group mb-6 overflow-hidden">
-            <div className="absolute inset-0 bg-cyan-400/10 transition-colors"></div>
-            <img src={logo} alt="Logo" className="w-12 h-12 object-contain relative z-10 filter drop-shadow(0 0 8px rgba(0,243,255,0.5))" />
-          </div>
-          <h1 className="text-4xl font-black tracking-tighter uppercase mb-2">
-            SECURE<span className="neon-text-cyan">RECOVERY</span>
-          </h1>
-          <p className="text-[10px] font-black tracking-[0.3em] text-slate-500 uppercase">Input Credentials for Reset Protocol</p>
+        <div className="mb-8 flex flex-col items-center">
+          <Link to="/" className="inline-flex flex-col items-center group">
+            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-6 shadow-sm border border-zinc-200/10">
+              <img src={logo} alt="Logo" className="w-8 h-8 object-contain" />
+            </div>
+            <h1 className="text-2xl font-semibold tracking-tight text-white mb-2">
+              Forgot Password
+            </h1>
+          </Link>
+          <p className="text-sm font-medium text-zinc-500">Enter your email to reset your password</p>
         </div>
 
         {/* Card */}
-        <div className="glass-card p-10 border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.3)]">
-          <form onSubmit={onSubmit} className="space-y-8">
-            <div className="space-y-3">
-              <label htmlFor="email" className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">
-                IDENTITY_EMAIL
+        <div className="glass-card p-8 border-zinc-800 text-left bg-zinc-900/80">
+          <form onSubmit={onSubmit} className="space-y-5">
+            <div className="space-y-2">
+              <label htmlFor="email" className="block text-sm font-medium text-zinc-300">
+                Email Address
               </label>
-              <div className="relative group">
+              <div className="relative flex">
                 <input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="glass-input pl-12 pr-4 py-4 uppercase font-black tracking-widest text-[10px]"
-                  placeholder="AGENT@SECTOR.COM"
+                  className="glass-input w-full px-3 py-2.5 text-sm font-medium text-white placeholder-zinc-500"
+                  placeholder="name@example.com"
                   required
+                  autoFocus
                 />
-                <i className="fa-regular fa-envelope absolute left-5 top-1/2 -translate-y-1/2 text-slate-600 group-focus-within:text-cyan-400 transition-colors"></i>
               </div>
             </div>
 
             <button
               type="submit"
               disabled={isLoading || !email}
-              className="w-full neon-button-cyan py-4 font-black tracking-[0.2em] text-xs uppercase"
+              className="w-full bg-white text-black h-10 rounded-md font-medium text-sm transition-colors hover:bg-zinc-200 mt-2 flex items-center justify-center disabled:opacity-50"
             >
-              <span className="flex items-center justify-center gap-3">
-                {isLoading ? (
-                  <i className="fa-solid fa-circle-notch animate-spin text-sm"></i>
-                ) : (
-                  <>
-                    INITIALIZE_RESET
-                    <i className="fa-solid fa-bolt-lightning text-xs group-hover:scale-110 transition-transform"></i>
-                  </>
-                )}
-              </span>
+              {isLoading ? (
+                <i className="fa-solid fa-circle-notch animate-spin text-sm"></i>
+              ) : (
+                'Send Reset Link'
+              )}
             </button>
           </form>
 
           {/* Footer */}
-          <div className="mt-10 pt-8 border-t border-white/5 text-center">
-            <Link to="/login" className="text-[10px] font-black tracking-widest text-slate-500 hover:text-cyan-400 uppercase transition-all flex items-center justify-center gap-2 group">
-              <i className="fa-solid fa-arrow-left-long group-hover:-translate-x-1 transition-transform"></i>
-              RETURN_TO_BASE
+          <div className="mt-8 pt-6 border-t border-zinc-800/50 text-center">
+            <Link to="/login" className="text-xs text-zinc-500 hover:text-white transition-all flex items-center justify-center gap-2 group font-medium">
+              <i className="fa-solid fa-arrow-left-long"></i>
+              Back to login
             </Link>
           </div>
         </div>
