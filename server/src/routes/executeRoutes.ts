@@ -14,7 +14,7 @@ const router = express.Router()
  */
 router.post('/', protect, async (req: AuthRequest, res) => {
   try {
-    const { language, code, stdin, roomId } = req.body
+    const { language, code, stdin } = req.body
 
     if (!language || !code) {
       return res.status(400).json({
@@ -33,29 +33,7 @@ router.post('/', protect, async (req: AuthRequest, res) => {
       c: 'c',
     }
 
-    const versionMap: Record<string, string> = {
-      javascript: '18.15.0',
-      typescript: '5.0.3',
-      python: '3.10.0',
-      java: '15.0.2',
-      cpp: '10.2.0',
-      c: '10.2.0',
-    }
-
     const runtime = langMap[language] || 'python'
-    const version = versionMap[runtime]
-
-    // ✅ Correct file naming for Piston
-    const fileName =
-      runtime === 'java'
-        ? 'Main.java'
-        : runtime === 'cpp'
-          ? 'main.cpp'
-          : runtime === 'c'
-            ? 'main.c'
-            : runtime === 'typescript'
-              ? 'main.ts'
-              : 'main.js'
 
     // ✅ Execute code through local runner
     const result = await runCode(runtime, code, stdin)

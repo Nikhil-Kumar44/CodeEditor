@@ -53,7 +53,7 @@ export const createRoom = async (req: AuthRequest, res: Response): Promise<void>
 export const getRooms = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { public: publicRooms, owner } = req.query;
-    let query: any = {};
+    const query: any = {};
 
     if (publicRooms === 'true') query.isPublic = true;
     else if (req.user && owner === 'me') query.ownerId = req.user.id;

@@ -12,7 +12,7 @@ export default function Rooms() {
 
   const [rooms, setRooms] = useState<{ roomId: string; name: string; description?: string; isPublic?: boolean; ownerId?: any }[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [_error, setError] = useState<string | null>(null)
+  const [, setError] = useState<string | null>(null)
 
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const [newRoomName, setNewRoomName] = useState('')
@@ -223,7 +223,7 @@ export default function Rooms() {
               </div>
             </div>
           ) : (
-            rooms.map((room, idx) => (
+            rooms.map((room) => (
               <div
                 key={room.roomId}
                 className="glass-card p-6 flex flex-col group relative overflow-hidden transition-all hover:bg-zinc-900/50 border-zinc-800"

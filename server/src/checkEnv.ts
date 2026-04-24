@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { join } from 'path';
 
 // Load environment variables
 dotenv.config();
